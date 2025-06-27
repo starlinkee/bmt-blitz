@@ -1,24 +1,30 @@
 // backend/src/server.js
 import express from 'express';
-import { db } from '../db.js';          // instancja Sequelize
-import '../models/index.js';           // rejestruje User, Client, Invoice
+import { db }          from '../db.js';
+import '../models/index.js';               // rejestruje modele
+import { sessionMiddleware } from './session.js';
+import { authRouter, authRequired } from './routes/auth.js';
 
 const app = express();
 
-// ---------- middleware ----------
-app.use(express.json());               // body parser JSON
+// ── globalne middleware ──────────────────────────────────────
+app.use(express.json());
+app.use(sessionMiddleware);
 
-// ---------- routy testowe ----------
-app.get('/health', (_, res) => res.send('OK'));
+// ── routy ─────────────────────────────────────────────────────
+app.use('/auth', authRouter);
 
-// ---------- start + init DB ----------
+app.get('/health', (_, res) => res.send('OK'));          // publiczne
+app.get('/secret', authRequired, (_, res) => res.send('Only admin!')); // chronione
+
+// ── start + init DB ──────────────────────────────────────────
 (async () => {
   try {
-    await db.authenticate();           // test połączenia
-    await db.sync();                   // jeśli tabel brak → CREATE
+    await db.authenticate();
+    await db.sync();                 // CREATE tabel, jeśli brak
     console.log('DB connected & synced');
 
-    const PORT = process.env.PORT || 3000;   // Passenger ustawia PORT
+    const PORT = process.env.PORT || 3000;   // Passenger ustawi PORT
     app.listen(PORT, () => console.log(`Server running on :${PORT}`));
   } catch (err) {
     console.error('DB error:', err);
