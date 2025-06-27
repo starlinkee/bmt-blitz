@@ -10,9 +10,14 @@ export const Invoice = db.define('Invoice', {
   vatRate:     { type: DataTypes.DECIMAL(4, 2),  allowNull: false },
   grossAmount: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
   pdfPath:     { type: DataTypes.STRING },
-  sentAt:      { type: DataTypes.DATE }
+  sentAt:      { type: DataTypes.DATE },
+  clientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
 }, {
   tableName: 'invoices',
+  timestamps: true
 });
 
 
