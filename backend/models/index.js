@@ -3,7 +3,7 @@ import { User }   from './User.js';
 import { Client } from './Client.js';
 import { Invoice } from './Invoice.js';
 
-// 1-∞ relacja
+// 1-∞ relacja a
 Client.hasMany(Invoice, { foreignKey: 'clientId' });
 Invoice.belongsTo(Client, { foreignKey: 'clientId' });
 
