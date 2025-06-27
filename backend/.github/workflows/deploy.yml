@@ -1,0 +1,28 @@
+name: Deploy to Small.pl
+
+on:
+  push:
+    branches: [ master ]          # zadziała przy każdym pushu na master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd ~/domains/bmt.googlenfc.smallhost.pl/public_nodejs
+            echo "▶ pulling latest code"
+            git pull origin master
+            echo "▶ installing backend deps"
+            npm --prefix backend install --production
+            echo "▶ restarting Passenger"
+            touch tmp/restart.txt
