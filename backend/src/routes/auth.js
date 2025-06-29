@@ -27,3 +27,11 @@ export function authRequired(req, res, next) {
   if (!req.session.userId) return res.status(401).json({ error: 'Unauthenticated' });
   next();
 }
+
+// GET /auth/me
+authRouter.get('/me', (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: 'Unauthenticated' });
+  }
+  res.json({ id: req.session.userId });
+});

@@ -1,0 +1,30 @@
+/* App.css - Custom styles that don't conflict with Tailwind */
+
+/* Remove conflicting styles that override Tailwind */
+#root {
+  /* Remove max-width, margin, padding, text-align - let Tailwind handle layout */
+}
+
+/* Keep only custom animations and non-conflicting styles */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Custom utility classes that extend Tailwind */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

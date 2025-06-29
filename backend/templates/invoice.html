@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 40px;
+      font-size: 14px;
+      color: #333;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+    }
+    .box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 48%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px;
+      text-align: left;
+    }
+    .summary {
+      text-align: right;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .footer {
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>RACHUNEK nr {{invoiceNumber}}</h1>
+  <h2>Data wystawienia: {{issueDate}} | Termin płatności: {{dueDate}}</h2>
+
+  <div class="section flex">
+    <div class="box">
+      <strong>NABYWCA:</strong><br />
+      {{clientName}}<br />
+      {{clientCompany}}<br />
+      {{clientAddress}}<br />
+    </div>
+    <div class="box">
+      <strong>SPRZEDAWCA:</strong><br />
+      {{sellerName}}<br />
+      {{sellerAddress}}<br />
+      NIP: {{sellerNIP}}
+    </div>
+  </div>
+
+  <div class="section">
+    <strong>Opis opłat:</strong><br />
+    {{description}}
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Lp</th>
+        <th>Opis</th>
+        <th>Ilość</th>
+        <th>j.m.</th>
+        <th>Cena jednostkowa [zł]</th>
+        <th>Wartość [zł]</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>{{itemDescription}}</td>
+        <td>{{quantity}}</td>
+        <td>{{unit}}</td>
+        <td>{{unitPrice}}</td>
+        <td>{{totalNet}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary">
+    DO ZAPŁATY: {{totalGross}} zł<br />
+    słownie: {{amountInWords}}
+  </div>
+
+  <div class="section">
+    <strong>Sposób zapłaty:</strong><br />
+    przelew na rachunek: {{bankAccount}}
+  </div>
+
+  <div class="footer">
+    Miejsce wystawienia: {{placeOfIssue}}
+  </div>
+</body>
+</html>

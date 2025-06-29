@@ -2,7 +2,7 @@ name: Deploy to Small.pl
 
 on:
   push:
-    branches: [ master ]          # zadziała przy każdym pushu na master
+    branches: [ master ]
 
 jobs:
   deploy:
@@ -20,9 +20,18 @@ jobs:
           script: |
             set -e
             cd ~/domains/bmt.googlenfc.smallhost.pl/public_nodejs
+
             echo "▶ pulling latest code"
             git pull origin master
+
             echo "▶ installing backend deps"
             npm --prefix backend install --production
+
+            echo "▶ installing frontend deps"
+            npm --prefix frontend install
+
+            echo "▶ building frontend"
+            npm --prefix frontend run build
+
             echo "▶ restarting Passenger"
             touch tmp/restart.txt
