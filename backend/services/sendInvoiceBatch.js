@@ -1,9 +1,7 @@
 import { Client } from '../models/Client.js';
+import { InvoiceBatch } from '../models/InvoiceBatch.js';
 import { generateInvoicePDF } from './generateInvoicePDF.js';
 import { sendInvoiceEmail } from './sendInvoice.js';
-import { db } from '../db.js';
-import fs from 'fs/promises';
-import path from 'path';
 
 export async function sendMonthlyInvoices() {
   const now = new Date();
@@ -12,12 +10,11 @@ export async function sendMonthlyInvoices() {
   const monthKey = `${year}-${month}`; // np. 2025-06
 
   // 🔎 Sprawdź, czy już wysłano faktury za ten miesiąc
-  const [results] = await db.query(
-    `SELECT 1 FROM invoice_batches WHERE month = ?`,
-    { replacements: [monthKey] }
-  );
+  const existingBatch = await InvoiceBatch.findOne({
+    where: { month: monthKey }
+  });
 
-  if (results.length > 0) {
+  if (existingBatch) {
     return { success: false, message: `Faktury za ${monthKey} już zostały wysłane.` };
   }
 
@@ -58,10 +55,10 @@ export async function sendMonthlyInvoices() {
   }
 
   // ✅ Zapisz log wysyłki
-  await db.query(
-    `INSERT INTO invoice_batches (month, sent_at) VALUES (?, ?)`,
-    { replacements: [monthKey, new Date()] }
-  );
+  await InvoiceBatch.create({
+    month: monthKey,
+    sent_at: new Date()
+  });
 
   return { success: true, message: `Faktury za ${monthKey} zostały pomyślnie wysłane.` };
 }
