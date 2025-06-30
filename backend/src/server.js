@@ -13,7 +13,7 @@ const app = express();
 
 // ── CORS (dostosuj jeśli potrzeba) ───────────────────────────
 const allowedOrigins = [
-  'http://localhost:5173',
+  'http://localhost',
   'http://bmt.googlenfc.smallhost.pl',
   'https://bmt.googlenfc.smallhost.pl'
 ];
