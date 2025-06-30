@@ -39,16 +39,6 @@ app.use(sessionMiddleware);
 app.use('/auth', authRouter);
 app.use('/invoices', invoiceRouter);
 
-// ── Serwowanie frontendu z Reacta ─────────────────────────────
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const frontendPath = path.resolve(__dirname, '../../frontend/dist');
-app.use(express.static(frontendPath));
-
-// ── Fallback SPA (dla React Router) – musi być NA KOŃCU ──────
-app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
-});
-
 // ── Testowe endpointy ─────────────────────────────────────────
 app.get('/health', (_, res) => res.send('OK'));
 app.get('/secret', authRequired, (_, res) => res.send('Only admin!'));
