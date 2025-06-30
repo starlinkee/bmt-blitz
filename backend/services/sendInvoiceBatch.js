@@ -26,6 +26,9 @@ export async function sendMonthlyInvoices() {
 
   for (const [index, client] of clients.entries()) {
     const invoiceNumber = `${year}-${month}-${String(index + 1).padStart(3, '0')}`;
+    
+    // Konwertuj rent ze stringa na liczbę (Sequelize DECIMAL zwraca string)
+    const rentAmount = parseFloat(client.rent);
 
     const invoiceData = {
       invoiceNumber,
@@ -42,10 +45,10 @@ export async function sendMonthlyInvoices() {
       itemDescription: `Czynsz – ${monthKey}`,
       quantity: '1',
       unit: 'm-c',
-      unitPrice: client.rent.toFixed(2),
-      totalNet: client.rent.toFixed(2),
-      totalGross: client.rent.toFixed(2),
-      amountInWords: toWords(client.rent),
+      unitPrice: rentAmount.toFixed(2),
+      totalNet: rentAmount.toFixed(2),
+      totalGross: rentAmount.toFixed(2),
+      amountInWords: toWords(rentAmount),
       bankAccount: '22 1240 1659 1111 0010 2591 2002',
       placeOfIssue: 'Kędzierzyn-Koźle'
     };
