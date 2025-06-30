@@ -24,10 +24,11 @@ jobs:
             cd ~/domains/bmt.googlenfc.smallhost.pl/public_nodejs
 
             echo "▶ Pobieranie najnowszego kodu"
+            git reset --hard HEAD
             git pull origin master
 
-            echo "▶ Instalowanie zależności frontendu"
-            npm --prefix frontend install --omit=dev
+            echo "▶ Instalowanie zależności frontendu (pełne, z dev)"
+            npm --prefix frontend install
 
             echo "▶ Ustawianie pliku .env dla frontendu"
             cp frontend/env.production frontend/.env
