@@ -13,9 +13,9 @@ const app = express();
 
 // ── CORS (dostosuj jeśli potrzeba) ───────────────────────────
 const allowedOrigins = [
-  'http://localhost:5173',
-  'http://bmt.googlenfc.smallhost.pl',
-  'https://bmt.googlenfc.smallhost.pl'
+  'http://localhost:5173',  // dev local
+  'http://bmt.googlenfc.smallhost.pl:5173',  // production frontend
+  'https://bmt.googlenfc.smallhost.pl:5173'  // production frontend (HTTPS)
 ];
 
 app.use(cors({

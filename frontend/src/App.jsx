@@ -41,11 +41,11 @@ export default function App() {
             <Route
               path="/"
               element={
-                isLoggedIn ? <Invoices /> : <Navigate to="/auth/login" replace />
+                isLoggedIn ? <Invoices /> : <Navigate to="/login" replace />
               }
             />
             <Route
-              path="/auth/login"
+              path="/login"
               element={
                 isLoggedIn ? (
                   <Navigate to="/" replace />
@@ -55,6 +55,7 @@ export default function App() {
               }
             />
           </Routes>
+
         </main>
       </div>
     </BrowserRouter>
