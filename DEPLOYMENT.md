@@ -75,7 +75,7 @@ touch ../tmp/restart.txt
 ~/domains/bmt.googlenfc.smallhost.pl/logs/error.log
 ```
 
-**Nie usuwaj katalogu `logs` — wymagany przez Passenger.**
+**Nie usuwaj katalogu `logs` — wymagany przez Passenger**
 
 ## Restart aplikacji
 
