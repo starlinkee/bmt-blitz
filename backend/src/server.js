@@ -4,17 +4,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { db } from '../db.js';
-import '../models/index.js'; // rejestruje modele
+import '../models/index.js';
 import { sessionMiddleware } from './session.js';
 import { authRouter, authRequired } from './routes/auth.js';
 import { invoiceRouter } from './routes/invoices.js';
 
 const app = express();
 
-// Dynamiczny origin w zależności od środowiska
+// ── CORS (dostosuj jeśli potrzeba) ───────────────────────────
 const allowedOrigins = [
-  'http://localhost:5173',  // dev local
-  'http://bmt.googlenfc.smallhost.pl',        // production frontend
+  'http://localhost:5173',
+  'http://bmt.googlenfc.smallhost.pl',
   'https://bmt.googlenfc.smallhost.pl'
 ];
 
@@ -30,33 +30,36 @@ app.use(cors({
   credentials: true
 }));
 
-// ── globalne middleware ──────────────────────────────────────
+// ── Middleware ────────────────────────────────────────────────
 app.use(express.json());
 app.use(sessionMiddleware);
 
-// ── routy API ─────────────────────────────────────────────────
+// ── API endpoints ─────────────────────────────────────────────
 app.use('/auth', authRouter);
 app.use('/invoices', invoiceRouter);
 
-// ── frontend ──────────────────────────────────────────────────
+// ── Serwowanie frontendu z Reacta ─────────────────────────────
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const frontendPath = path.resolve(__dirname, '../../frontend/dist');
-
 app.use(express.static(frontendPath));
 
-// React SPA fallback – zwracaj index.html dla każdej innej ścieżki
+// ── Fallback SPA (dla React Router) – musi być NA KOŃCU ──────
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// ── start + init DB ───────────────────────────────────────────
+// ── Testowe endpointy ─────────────────────────────────────────
+app.get('/health', (_, res) => res.send('OK'));
+app.get('/secret', authRequired, (_, res) => res.send('Only admin!'));
+
+// ── Init DB + Start server ────────────────────────────────────
 (async () => {
   try {
     await db.authenticate();
     await db.sync();
     console.log('DB connected & synced');
 
-    const PORT = process.env.PORT || 3000; // Passenger ustawi PORT
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`Server running on :${PORT}`));
   } catch (err) {
     console.error('DB error:', err);
