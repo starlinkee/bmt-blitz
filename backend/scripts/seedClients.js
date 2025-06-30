@@ -6,7 +6,7 @@ await db.sync();
 
 const client = await Client.create({
   name: 'Jan Kowalski',
-  email: 'jan@example.com',
+  email: 'vikbobinski@gmail.com',
   address: 'ul. Przykładowa 12, 00-001 Warszawa',
   rent: 1200 // ← DODAJ TO (albo inna domyślna kwota)
 });
