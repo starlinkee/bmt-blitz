@@ -19,19 +19,25 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             set -e
+
+            echo "▶ przechodzenie do katalogu projektu"
             cd ~/domains/bmt.googlenfc.smallhost.pl/public_nodejs
 
-            echo "▶ pulling latest code"
+            echo "▶ pobieranie najnowszego kodu"
             git pull origin master
 
-            echo "▶ installing backend deps"
-            npm --prefix backend install --production
+            echo "▶ instalowanie zależności frontendu"
+            npm --prefix frontend install --omit=dev
 
-            echo "▶ installing frontend deps"
-            npm --prefix frontend install
-
-            echo "▶ building frontend"
+            echo "▶ budowanie frontendu"
             npm --prefix frontend run build
 
-            echo "▶ restarting Passenger"
+            echo "▶ kopiowanie plików do public/"
+            rm -rf public/*
+            cp -r frontend/dist/* public/
+
+            echo "▶ instalowanie zależności backendu"
+            npm --prefix backend install --omit=dev
+
+            echo "▶ restartowanie Passenger"
             touch tmp/restart.txt
