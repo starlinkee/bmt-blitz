@@ -13,5 +13,5 @@ export const InvoiceBatch = db.define('InvoiceBatch', {
   }
 }, {
   tableName: 'invoice_batches',
-  timestamps: true
+  timestamps: false
 });
