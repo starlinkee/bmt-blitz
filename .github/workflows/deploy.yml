@@ -20,24 +20,27 @@ jobs:
           script: |
             set -e
 
-            echo "▶ przechodzenie do katalogu projektu"
+            echo "▶ Przechodzenie do katalogu projektu"
             cd ~/domains/bmt.googlenfc.smallhost.pl/public_nodejs
 
-            echo "▶ pobieranie najnowszego kodu"
+            echo "▶ Pobieranie najnowszego kodu"
             git pull origin master
 
-            echo "▶ instalowanie zależności frontendu"
+            echo "▶ Instalowanie zależności frontendu"
             npm --prefix frontend install --omit=dev
 
-            echo "▶ budowanie frontendu"
+            echo "▶ Ustawianie pliku .env dla frontendu"
+            cp frontend/env.production frontend/.env
+
+            echo "▶ Budowanie frontendu"
             npm --prefix frontend run build
 
-            echo "▶ kopiowanie plików do public/"
+            echo "▶ Kopiowanie plików do public/"
             rm -rf public/*
             cp -r frontend/dist/* public/
 
-            echo "▶ instalowanie zależności backendu"
+            echo "▶ Instalowanie zależności backendu"
             npm --prefix backend install --omit=dev
 
-            echo "▶ restartowanie Passenger"
+            echo "▶ Restartowanie Passenger"
             touch tmp/restart.txt
