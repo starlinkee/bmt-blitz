@@ -4,30 +4,54 @@
 
 Domena: https://bmt.googlenfc.smallhost.pl
 
-Na serwerze (Smallhost) aplikacja działa w katalogu:
+Katalog główny aplikacji:
 
 `~/domains/bmt.googlenfc.smallhost.pl/public_nodejs`
 
-- Frontend (React): budowany lokalnie i kopiowany do `public/`
-- Backend (Node.js + Express): działa pod Passengerem
-- Statyczne pliki: serwowane z `public_nodejs/public/`
+- **Frontend**: React, zbudowany do `frontend/dist/`, kopiowany do `public/`
+- **Backend**: Express.js, uruchamiany przez Passenger
+- **Statyczne pliki**: obsługiwane z `public_nodejs/public/`
 
-## Proces wdrożenia (automatyczny)
+## Proces wdrożenia
 
-### GitHub Actions
+Wdrożenie następuje automatycznie przez GitHub Actions po każdym pushu na `master`.
 
-Każdy push na `master` automatycznie:
+### Co robi workflow:
 
 1. Buduje frontend (`npm run build`)
 2. Kopiuje `frontend/dist/` do `public/`
 3. Instaluje zależności backendu
 4. Restartuje Passenger (`touch tmp/restart.txt`)
 
-Plik workflow: `.github/workflows/deploy.yml`
+Plik: `.github/workflows/deploy.yml`
 
-## Ręczne wdrożenie (awaryjnie)
+## Zmienne środowiskowe
 
-### 1. Frontend
+### Frontend
+
+Ustawiane w pliku `frontend/env.production`:
+
+```env
+VITE_API_URL=https://bmt.googlenfc.smallhost.pl
+```
+
+Podczas deploya kopiowane automatycznie do `frontend/.env`, ponieważ Vite używa `.env` przy budowaniu.
+
+### Backend
+
+Plik: `backend/.env` — musi istnieć na serwerze.
+
+```env
+DATABASE_URL=postgres://p1790_bmt_blitz:Loskefiros%210@pgsql2.small.pl:5432/p1790_bmt_blitz
+DIALECT=postgres
+SESSION_SECRET=bmtpolska2007
+GMAIL_USER=twoj@email.com
+GMAIL_APP_PASS=app-password
+```
+
+## Ręczne wdrożenie (awaryjne)
+
+### Frontend
 
 ```bash
 cd frontend
@@ -37,7 +61,7 @@ npm run build
 cp -r dist/* ../public/
 ```
 
-### 2. Backend
+### Backend
 
 ```bash
 cd backend
@@ -45,57 +69,26 @@ npm install --omit=dev
 touch ../tmp/restart.txt
 ```
 
-## Wymagania środowiskowe
-
-### Baza danych
-
-- PostgreSQL
-- Wymagane zmienne: `DATABASE_URL`, `DIALECT`
-
-### Zmienne środowiskowe (`.env` w backendzie)
-
-```env
-DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DBNAME
-DIALECT=postgres
-SESSION_SECRET=your_super_secret_key
-GMAIL_USER=twoj@email.com
-GMAIL_APP_PASS=hasło_aplikacji
-```
-
-## API
-
-Domena backendu i frontendu to ta sama:
-
-`https://bmt.googlenfc.smallhost.pl`
-
-Frontend odczytuje `VITE_API_URL` z pliku `env.production`, np.:
-
-```env
-VITE_API_URL=https://bmt.googlenfc.smallhost.pl
-```
-
-## Restart aplikacji
-
-Wymuszenie restartu Passenger:
-
-```bash
-touch ~/domains/bmt.googlenfc.smallhost.pl/tmp/restart.txt
-```
-
 ## Logi
-
-Logi backendu:
 
 ```
 ~/domains/bmt.googlenfc.smallhost.pl/logs/error.log
 ```
 
-Nie usuwaj katalogu `logs` — jest potrzebny do działania Passengera.
+**Nie usuwaj katalogu `logs` — wymagany przez Passenger.**
+
+## Restart aplikacji
+
+```bash
+touch ~/domains/bmt.googlenfc.smallhost.pl/tmp/restart.txt
+```
 
 ## Gotowe
 
-Po zakończeniu wdrożenia aplikacja będzie dostępna pod:
+Po wdrożeniu aplikacja działa pod:
 
-`https://bmt.googlenfc.smallhost.pl`
+```
+https://bmt.googlenfc.smallhost.pl
+```
 
-Frontend, API i logowanie będą działać bez potrzeby portów.
+Zarówno frontend jak i backend są zintegrowane pod jedną domeną, bez portów.
