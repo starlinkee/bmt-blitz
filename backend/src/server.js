@@ -74,39 +74,9 @@ console.log('🔧 Adding session middleware...');
 app.use(sessionMiddleware);
 console.log('✅ Session middleware added');
 
-// ── Middleware do obsługi połączenia z bazą danych ─────────────
-console.log('🗄️ Adding database connection middleware...');
-let dbInitialized = false;
-
-app.use(async (req, res, next) => {
-  // Inicjalizuj bazę danych przy pierwszym żądaniu
-  if (!dbInitialized && process.env.NODE_ENV === 'production') {
-    try {
-      console.log('🗄️ Initializing database on first request...');
-      await sequelize.authenticate();
-      console.log('✅ Database authenticated on first request');
-      dbInitialized = true;
-    } catch (err) {
-      console.error('❌ Database connection failed on first request:', err);
-      return res.status(500).json({ error: 'Database connection failed' });
-    }
-  }
-  next();
-});
-
-console.log('✅ Database middleware added');
-
 console.log('✅ All middleware configured');
 
-// ── API endpoints ─────────────────────────────────────────────
-console.log('🛣️ Setting up routes...');
-app.use('/auth', authRouter);
-app.use('/invoices', invoiceRouter);
-app.use('/media', mediaRouter);
-
-console.log('✅ Routes configured');
-
-// ── Testowe endpointy ─────────────────────────────────────────
+// ── Testowe endpointy (PRZED routami API) ───────────────────────────────
 app.get('/health', (_, res) => {
   console.log('🏥 Health check requested');
   res.send('OK');
@@ -118,6 +88,14 @@ app.get('/secret', authRequired, (_, res) => {
 });
 
 console.log('✅ Test endpoints configured');
+
+// ── API endpoints ─────────────────────────────────────────────
+console.log('🛣️ Setting up routes...');
+app.use('/auth', authRouter);
+app.use('/invoices', invoiceRouter);
+app.use('/media', mediaRouter);
+
+console.log('✅ Routes configured');
 
 // ── Init DB + Start server ────────────────────────────────────
 const init = async () => {
