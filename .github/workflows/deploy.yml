@@ -40,13 +40,10 @@ jobs:
             rm -rf public/*
             cp -r frontend/dist/* public/
 
-            echo "▶ Instalowanie zależności"
-            # Instaluj tylko w głównym katalogu - dotenv będzie dostępny dla całej aplikacji
-            npm install --omit=dev --verbose
-            
-            echo "▶ Instalowanie zależności backendu (tylko brakujące)"
+            echo "▶ Instalowanie zależności backendu"
             cd backend
-            npm install --omit=dev --no-package-lock
+            rm -rf node_modules package-lock.json
+            npm install --omit=dev
             cd ..
 
             echo "▶ Sprawdzanie zmiennych środowiskowych"
@@ -66,29 +63,10 @@ jobs:
               fi
               echo "✅ Zaktualizowano NODE_ENV w istniejącym pliku .env"
             fi
-            
-            # Dodaj DATABASE_URL i SESSION_SECRET jeśli nie istnieją
-            if ! grep -q "DATABASE_URL" .env; then
-              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-              echo "✅ Dodano DATABASE_URL"
-            fi
-            
-            if ! grep -q "SESSION_SECRET" .env; then
-              echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
-              echo "✅ Dodano SESSION_SECRET"
-            fi
 
             echo "▶ Synchronizacja bazy danych"
             node -e "
-            // Ładuj zmienne środowiskowe przed importem db.js
-            import('dotenv').then(dotenv => {
-              dotenv.config({ path: './.env' });
-              console.log('📦 Zmienne środowiskowe załadowane');
-              console.log('NODE_ENV:', process.env.NODE_ENV);
-              console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
-              
-              return import('./db.js');
-            }).then(async ({db}) => {
+            import('./db.js').then(async ({db}) => {
               console.log('🔄 Synchronizacja bazy danych...');
               await db.authenticate();
               
@@ -106,11 +84,7 @@ jobs:
 
             echo "▶ Sprawdzanie czy kolumna media_template_id już istnieje"
             if node -e "
-              // Ładuj zmienne środowiskowe przed importem db.js
-              import('dotenv').then(dotenv => {
-                dotenv.config({ path: './.env' });
-                return import('./db.js');
-              }).then(({ db }) => {
+              import('./db.js').then(({ db }) => {
                 return db.query('SELECT column_name FROM information_schema.columns WHERE table_name = \'media_records\' AND column_name = \'media_template_id\'');
               }).then(([results]) => {
                 if (results.length === 0) {
@@ -133,11 +107,7 @@ jobs:
 
             echo "▶ Sprawdzanie czy dane mediów już istnieją"
             if node -e "
-              // Ładuj zmienne środowiskowe przed importem modeli
-              import('dotenv').then(dotenv => {
-                dotenv.config({ path: './.env' });
-                return import('./models/index.js');
-              }).then(({ MediaType }) => {
+              import('./models/index.js').then(({ MediaType }) => {
                 return MediaType.findOne();
               }).then(type => {
                 if (type) {
