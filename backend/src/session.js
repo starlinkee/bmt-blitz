@@ -13,6 +13,7 @@ dotenv.config({ path: path.join(__dirname, '../.env') });   // ważne: absolutny
 console.log('Session configuration:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+console.log('SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
 
 const PostgresStore = pgSimple(session);
 
@@ -28,8 +29,17 @@ const sessionConfig = {
   }
 };
 
+console.log('Session config created:', {
+  secret: !!sessionConfig.secret,
+  resave: sessionConfig.resave,
+  saveUninitialized: sessionConfig.saveUninitialized,
+  cookie: sessionConfig.cookie
+});
+
 // Tymczasowo używaj MemoryStore dla wszystkich środowisk
 console.log('Using MemoryStore for sessions (temporary)');
+console.log('Reason: PostgreSQL store causing hangs');
+
 // sessionConfig.store = new PostgresStore({
 //   conObject: {
 //     connectionString: process.env.DATABASE_URL,

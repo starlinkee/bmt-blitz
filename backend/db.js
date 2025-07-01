@@ -4,27 +4,20 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// ── ustalamy katalog bieżącego pliku
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Załaduj .env z odpowiedniej lokalizacji
-const envPath = path.join(__dirname, '.env');
-dotenv.config({ path: envPath });
+// ── ładujemy .env z katalogu backend
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 console.log('Database configuration:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
 console.log('DIALECT:', process.env.DIALECT || 'postgres');
 
-// Automatyczne wykrycie typu bazy na podstawie DATABASE_URL
-const dialect = process.env.DATABASE_URL ? 
-                (process.env.DATABASE_URL.includes('sqlite') ? 'sqlite' :
-                 process.env.DATABASE_URL.includes('postgres') ? 'postgres' :
-                 'sqlite') :
-                process.env.DIALECT || 'sqlite';
-
 // ── konfiguracja bazy danych
 const config = {
-  dialect,
+  dialect: process.env.DIALECT || 'postgres',
   logging: (msg) => console.log('DB Query:', msg), // logowanie zapytań SQL
   pool: {
     max: 5,
@@ -37,7 +30,6 @@ const config = {
 // ── jeśli mamy DATABASE_URL, używamy go
 if (process.env.DATABASE_URL) {
   console.log('Using DATABASE_URL for connection');
-  config.url = process.env.DATABASE_URL;
   
   // ── sprawdź czy to PostgreSQL
   if (process.env.DATABASE_URL.includes('postgres')) {
@@ -46,6 +38,9 @@ if (process.env.DATABASE_URL) {
       ssl: { rejectUnauthorized: false }
     };
     console.log('PostgreSQL connection with SSL');
+    
+    // ── użyj DATABASE_URL bezpośrednio
+    config.url = process.env.DATABASE_URL;
   }
 } else {
   // ── fallback dla SQLite (development)

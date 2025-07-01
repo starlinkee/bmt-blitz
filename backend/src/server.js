@@ -3,20 +3,26 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+console.log('Starting server initialization...');
+
 import { db as sequelize } from '../db.js'; // zmieniono na alias zgodny z index.js
 import {
   User, Client, Invoice, InvoiceBatch, InvoiceSettings,
   MediaType, MediaTemplate, MediaRecord, MediaVariable, MediaAttachment
 } from '../models/index.js'; // wymuszenie załadowania modeli i relacji
 
+console.log('Models imported successfully');
+
 import { sessionMiddleware } from './session.js';
 import { authRouter, authRequired } from './routes/auth.js';
 import { invoiceRouter } from './routes/invoices.js';
 import mediaRouter from './routes/media.js';
 
+console.log('Routes imported successfully');
+
 const app = express();
 
-console.log('Starting server...');
+console.log('Express app created');
 
 // ── CORS ──────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -25,6 +31,8 @@ const allowedOrigins = [
   'http://bmt.googlenfc.smallhost.pl',
   'https://bmt.googlenfc.smallhost.pl'
 ];
+
+console.log('Setting up CORS with origins:', allowedOrigins);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -38,13 +46,21 @@ app.use(cors({
   credentials: true
 }));
 
+console.log('CORS configured');
+
 // ── Middleware ────────────────────────────────────────────────
+console.log('Setting up middleware...');
 app.use(express.json());
+console.log('JSON middleware added');
+
+console.log('Adding session middleware...');
 app.use(sessionMiddleware);
+console.log('Session middleware added');
 
 console.log('Middleware configured');
 
 // ── API endpoints ─────────────────────────────────────────────
+console.log('Setting up routes...');
 app.use('/auth', authRouter);
 app.use('/invoices', invoiceRouter);
 app.use('/media', mediaRouter);
@@ -52,15 +68,27 @@ app.use('/media', mediaRouter);
 console.log('Routes configured');
 
 // ── Testowe endpointy ─────────────────────────────────────────
-app.get('/health', (_, res) => res.send('OK'));
-app.get('/secret', authRequired, (_, res) => res.send('Only admin!'));
+app.get('/health', (_, res) => {
+  console.log('Health check requested');
+  res.send('OK');
+});
+
+app.get('/secret', authRequired, (_, res) => {
+  console.log('Secret endpoint accessed');
+  res.send('Only admin!');
+});
+
+console.log('Test endpoints configured');
 
 // ── Init DB + Start server ────────────────────────────────────
 const init = async () => {
   try {
+    console.log('Starting database initialization...');
     await sequelize.authenticate();
+    console.log('Database authenticated');
+    
     await sequelize.sync({ force: false }); // bezpieczne - nie zmienia struktury
-    console.log('DB connected & synced');
+    console.log('Database synced');
 
     const PORT = process.env.PORT || 3000;
 
@@ -76,6 +104,7 @@ const init = async () => {
   }
 };
 
+console.log('Starting initialization...');
 init();
 
 // 🟡 Export handler do Passenger
