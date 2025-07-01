@@ -10,18 +10,34 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   useEffect(() => {
+    console.log('🔍 Sprawdzanie sesji...');
+    console.log('🌐 API_URL:', API_URL);
+    console.log('📡 Wysyłanie żądania do:', `${API_URL}/auth/me`);
+    
     fetch(`${API_URL}/auth/me`, {
       credentials: 'include',
     })
-      .then((res) => setIsLoggedIn(res.ok))
-      .catch(() => setIsLoggedIn(false));
+      .then((res) => {
+        console.log('✅ Odpowiedź z /auth/me:', res.status, res.statusText);
+        console.log('🔐 Czy zalogowany:', res.ok);
+        setIsLoggedIn(res.ok);
+      })
+      .catch((error) => {
+        console.error('❌ Błąd podczas sprawdzania sesji:', error);
+        console.log('🔐 Ustawiam isLoggedIn na false');
+        setIsLoggedIn(false);
+      });
   }, []);
 
   const handleLogin = () => {
+    console.log('🔐 Logowanie udane - ustawiam isLoggedIn na true');
     setIsLoggedIn(true);
   };
 
+  console.log('🎯 Stan isLoggedIn:', isLoggedIn);
+
   if (isLoggedIn === null) {
+    console.log('⏳ Pokazuję spinner sprawdzania sesji');
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -31,6 +47,8 @@ export default function App() {
       </div>
     );
   }
+
+  console.log('🎯 Renderuję główną aplikację, isLoggedIn:', isLoggedIn);
 
   return (
     <BrowserRouter>

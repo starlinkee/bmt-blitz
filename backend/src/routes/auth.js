@@ -33,16 +33,20 @@ export function authRequired(req, res, next) {
 
 // GET /auth/me
 authRouter.get('/me', (req, res) => {
-  console.log('/auth/me called');
-  console.log('Session ID:', req.sessionID);
-  console.log('Session data:', req.session);
-  console.log('User ID in session:', req.session.userId);
+  console.log('🔍 /auth/me called');
+  console.log('📅 Timestamp:', new Date().toISOString());
+  console.log('🌐 Headers:', req.headers);
+  console.log('🍪 Cookies:', req.headers.cookie);
+  console.log('🆔 Session ID:', req.sessionID);
+  console.log('📊 Session data:', req.session);
+  console.log('👤 User ID in session:', req.session.userId);
   
   if (!req.session.userId) {
-    console.log('No user ID in session - returning 401');
+    console.log('❌ No user ID in session - returning 401');
     return res.status(401).json({ error: 'Unauthenticated' });
   }
   
-  console.log('User authenticated:', req.session.userId);
+  console.log('✅ User authenticated:', req.session.userId);
+  console.log('📤 Sending response with user ID');
   res.json({ id: req.session.userId });
 });
