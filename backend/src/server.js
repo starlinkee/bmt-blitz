@@ -53,6 +53,16 @@ console.log('Setting up middleware...');
 app.use(express.json());
 console.log('JSON middleware added');
 
+// Dodaj middleware do logowania wszystkich żądań
+app.use((req, res, next) => {
+  console.log('🌐 HTTP Request:', req.method, req.url);
+  console.log('📅 Timestamp:', new Date().toISOString());
+  console.log('🌍 Origin:', req.headers.origin);
+  console.log('🍪 Cookies:', req.headers.cookie);
+  console.log('---');
+  next();
+});
+
 console.log('Adding session middleware...');
 app.use(sessionMiddleware);
 console.log('Session middleware added');
