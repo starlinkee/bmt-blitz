@@ -10,20 +10,14 @@ import { InvoiceSettings } from './InvoiceSettings.js';
 import { MediaBatch } from './MediaBatch.js';
 
 // Modele mediów
-import MediaTypeModel from './MediaType.js';
-import MediaTemplateModel from './MediaTemplate.js';
-import MediaRecordModel from './MediaRecord.js';
-import MediaVariableModel from './MediaVariable.js';
-import MediaAttachmentModel from './MediaAttachment.js';
-import ClientMediaTemplateModel from './ClientMediaTemplate.js';
+import { MediaType } from './MediaType.js';
+import { MediaTemplate } from './MediaTemplate.js';
+import { MediaRecord } from './MediaRecord.js';
+import { MediaVariable } from './MediaVariable.js';
+import { MediaAttachment } from './MediaAttachment.js';
+import { ClientMediaTemplate } from './ClientMediaTemplate.js';
 
-// Inicjalizacja modeli
-const MediaType = MediaTypeModel(sequelize, Sequelize.DataTypes);
-const MediaTemplate = MediaTemplateModel(sequelize, Sequelize.DataTypes);
-const MediaRecord = MediaRecordModel(sequelize, Sequelize.DataTypes);
-const MediaVariable = MediaVariableModel(sequelize, Sequelize.DataTypes);
-const MediaAttachment = MediaAttachmentModel(sequelize, Sequelize.DataTypes);
-const ClientMediaTemplate = ClientMediaTemplateModel(sequelize, Sequelize.DataTypes);
+// Wszystkie modele są już zainicjalizowane w swoich plikach
 
 // Relacje
 Client.hasMany(Invoice, { foreignKey: 'clientId' });

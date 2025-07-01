@@ -1,7 +1,5 @@
-import { User } from '../models/User.js';
-import { db } from '../db.js';
 import bcrypt from 'bcrypt';
-import '../models/index.js';
+import { User } from '../models/index.js';
 
 const run = async () => {
   console.log('🔐 Sprawdzanie administratora...');

@@ -76,6 +76,16 @@ if (process.env.DATABASE_URL) {
       ssl: false
     };
     console.log('PostgreSQL connection WITHOUT SSL (server does not support SSL)');
+  } else if (process.env.DATABASE_URL.includes('sqlite')) {
+    // ── dla SQLite używamy storage zamiast database
+    config.dialect = 'sqlite';
+    config.storage = config.database; // używamy ścieżki jako storage
+    delete config.database; // usuwamy database dla SQLite
+    delete config.host;
+    delete config.port;
+    delete config.username;
+    delete config.password;
+    console.log('SQLite connection configured');
   }
 } else {
   // ── fallback dla SQLite (development)
@@ -91,6 +101,8 @@ console.log('Final config:', {
   database: config.database,
   hasSSL: !!config.dialectOptions?.ssl
 });
+
+console.log('Ścieżka do pliku bazy:', config.storage || config.database);
 
 export const db = new Sequelize(config);
 
