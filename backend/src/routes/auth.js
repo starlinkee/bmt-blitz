@@ -4,7 +4,7 @@ import { User } from '../../models/User.js';
 
 export const authRouter = Router();
 
-// POST /auth/login { email, password }
+// POST /auth/login { email, password }d
 authRouter.post('/login', async (req, res) => {
   console.log('Login attempt:', req.body.email);
   const { email, password } = req.body;
