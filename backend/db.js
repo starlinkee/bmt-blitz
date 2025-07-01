@@ -22,6 +22,17 @@ if (process.env.DATABASE_URL) {
     const hostPart = urlParts[1];
     console.log('DATABASE_URL host part:', hostPart);
   }
+  
+  // ── tymczasowe logowanie hasła (do debugowania)
+  try {
+    const url = new URL(process.env.DATABASE_URL);
+    console.log('Parsed username:', url.username);
+    console.log('Parsed password length:', url.password ? url.password.length : 0);
+    console.log('Parsed password first char:', url.password ? url.password[0] : 'none');
+    console.log('Parsed password last char:', url.password ? url.password[url.password.length - 1] : 'none');
+  } catch (err) {
+    console.log('Error parsing DATABASE_URL:', err.message);
+  }
 }
 
 // ── konfiguracja bazy danych
