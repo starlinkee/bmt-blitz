@@ -40,14 +40,14 @@ jobs:
             rm -rf public/*
             cp -r frontend/dist/* public/
 
-            echo "▶ Instalowanie zależności backendu"
-            cd backend
-            rm -rf node_modules package-lock.json
+            echo "▶ Instalowanie zależności"
+            # Instaluj tylko w głównym katalogu - dotenv będzie dostępny dla całej aplikacji
             npm install --omit=dev
-            cd ..
             
-            echo "▶ Instalowanie zależności głównego katalogu"
-            npm install --omit=dev
+            echo "▶ Instalowanie zależności backendu (tylko brakujące)"
+            cd backend
+            npm install --omit=dev --no-package-lock
+            cd ..
 
             echo "▶ Sprawdzanie zmiennych środowiskowych"
             cd backend
