@@ -112,6 +112,12 @@ jobs:
               node scripts/seedMediaData.js
             fi
 
+            echo "▶ Sprawdzanie czy app.js istnieje"
+            if [ ! -f app.js ]; then
+              echo "⚠️  Brak app.js - tworzę..."
+              echo "import app from './src/server.js'; export default app;" > app.js
+            fi
+
             echo "▶ Restartowanie Passenger"
             cd ..
             touch tmp/restart.txt
