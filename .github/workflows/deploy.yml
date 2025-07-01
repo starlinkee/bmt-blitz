@@ -66,6 +66,10 @@ jobs:
             import('./db.js').then(async ({db}) => {
               console.log('🔄 Synchronizacja bazy danych...');
               await db.authenticate();
+              
+              // Załaduj modele przed synchronizacją
+              await import('./models/index.js');
+              
               await db.sync({force: false});
               console.log('✅ Baza danych zsynchronizowana');
               process.exit(0);
