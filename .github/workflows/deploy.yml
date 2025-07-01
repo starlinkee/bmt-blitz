@@ -41,7 +41,10 @@ jobs:
             cp -r frontend/dist/* public/
 
             echo "▶ Instalowanie zależności backendu"
-            npm --prefix backend install --omit=dev
+            cd backend
+            rm -rf node_modules package-lock.json
+            npm install --omit=dev
+            cd ..
 
             echo "▶ Sprawdzanie zmiennych środowiskowych"
             cd backend
