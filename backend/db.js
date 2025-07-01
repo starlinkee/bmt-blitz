@@ -11,8 +11,10 @@ const envPath = path.join(__dirname, '.env');
 dotenv.config({ path: envPath });
 
 // Automatyczne wykrycie typu bazy na podstawie DATABASE_URL
-const dialect = process.env.DATABASE_URL.includes('sqlite') ? 'sqlite' :
-                process.env.DATABASE_URL.includes('postgres') ? 'postgres' :
+const dialect = process.env.DATABASE_URL ? 
+                (process.env.DATABASE_URL.includes('sqlite') ? 'sqlite' :
+                 process.env.DATABASE_URL.includes('postgres') ? 'postgres' :
+                 'sqlite') :
                 process.env.DIALECT || 'sqlite';
 
 export const db = new Sequelize(process.env.DATABASE_URL, {
