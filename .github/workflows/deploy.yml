@@ -42,7 +42,7 @@ jobs:
 
             echo "▶ Instalowanie zależności"
             # Instaluj tylko w głównym katalogu - dotenv będzie dostępny dla całej aplikacji
-            npm install --omit=dev
+            npm install --omit=dev --verbose
             
             echo "▶ Instalowanie zależności backendu (tylko brakujące)"
             cd backend
