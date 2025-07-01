@@ -16,6 +16,8 @@ import mediaRouter from './routes/media.js';
 
 const app = express();
 
+console.log('🚀 Starting server...');
+
 // ── CORS ──────────────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost',
@@ -40,10 +42,14 @@ app.use(cors({
 app.use(express.json());
 app.use(sessionMiddleware);
 
+console.log('✅ Middleware configured');
+
 // ── API endpoints ─────────────────────────────────────────────
 app.use('/auth', authRouter);
 app.use('/invoices', invoiceRouter);
 app.use('/media', mediaRouter);
+
+console.log('✅ Routes configured');
 
 // ── Testowe endpointy ─────────────────────────────────────────
 app.get('/health', (_, res) => res.send('OK'));
