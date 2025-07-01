@@ -1,20 +1,21 @@
-// backend/db.js
+// db.js
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// ──────────────────────────────────────────────────────────────
-// 1. Ustal katalog pliku db.js  →  …/public_nodejs/backend
-//    (__dirname nie istnieje w ES-modules, trzeba wyliczyć)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// 2. Załaduj .env z tego katalogu
+// Załaduj .env z odpowiedniej lokalizacji
 const envPath = path.join(__dirname, '.env');
 dotenv.config({ path: envPath });
 
-// 3. Utwórz instancję Sequelize
+// Automatyczne wykrycie typu bazy na podstawie DATABASE_URL
+const dialect = process.env.DATABASE_URL.includes('sqlite') ? 'sqlite' :
+                process.env.DATABASE_URL.includes('postgres') ? 'postgres' :
+                process.env.DIALECT || 'sqlite';
+
 export const db = new Sequelize(process.env.DATABASE_URL, {
-  dialect : process.env.DIALECT || 'postgres', // 'sqlite' w dev, 'postgres' w prod
-  logging : false
+  dialect,
+  logging: false
 });
