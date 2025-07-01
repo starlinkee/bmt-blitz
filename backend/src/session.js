@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // ── ładujemy .env z katalogu backend (poziom wyżej)
 dotenv.config({ path: path.join(__dirname, '../.env') });   // ważne: absolutny path
 
-console.log('🔧 Session configuration:');
+console.log('Session configuration:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
 
@@ -30,7 +30,7 @@ const sessionConfig = {
 
 // Używaj PostgreSQL store tylko na produkcji
 if (process.env.NODE_ENV === 'production') {
-  console.log('📊 Using PostgreSQL session store');
+  console.log('Using PostgreSQL session store');
   sessionConfig.store = new PostgresStore({
     conObject: {
       connectionString: process.env.DATABASE_URL,
@@ -40,9 +40,9 @@ if (process.env.NODE_ENV === 'production') {
     createTableIfMissing: true
   });
 } else {
-  console.log('💾 Using MemoryStore for sessions');
+  console.log('Using MemoryStore for sessions');
 }
 
-console.log('✅ Session middleware configured');
+console.log('Session middleware configured');
 
 export const sessionMiddleware = session(sessionConfig);
