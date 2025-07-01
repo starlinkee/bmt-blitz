@@ -52,7 +52,9 @@ jobs:
             else
               # Dodaj/aktualizuj tylko NODE_ENV
               if grep -q "NODE_ENV" .env; then
-                sed -i 's/NODE_ENV=.*/NODE_ENV=production/' .env
+                # Użyj sed z flagą -i.bak dla kompatybilności
+                sed -i.bak 's/NODE_ENV=.*/NODE_ENV=production/' .env
+                rm -f .env.bak
               else
                 echo "NODE_ENV=production" >> .env
               fi
