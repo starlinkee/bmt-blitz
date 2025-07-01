@@ -1,6 +1,6 @@
 // db.js
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv'; // usunięte - już załadowane w app.js
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ── ładujemy .env z katalogu backend
-dotenv.config({ path: path.join(__dirname, '.env') });
+// dotenv.config({ path: path.join(__dirname, '.env') }); // usunięte - już załadowane w app.js
 
 console.log('Database configuration:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -106,11 +106,11 @@ console.log('Ścieżka do pliku bazy:', config.storage || config.database);
 
 export const db = new Sequelize(config);
 
-// ── test połączenia
-db.authenticate()
-  .then(() => {
-    console.log('Database connection successful');
-  })
-  .catch(err => {
-    console.error('Database connection failed:', err);
-  });
+// ── test połączenia - usunięte, bo może powodować zawieszenie podczas importu
+// db.authenticate()
+//   .then(() => {
+//     console.log('Database connection successful');
+//   })
+//   .catch(err => {
+//     console.error('Database connection failed:', err);
+//   });

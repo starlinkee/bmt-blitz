@@ -1,6 +1,6 @@
 import session from 'express-session';
 import pgSimple from 'connect-pg-simple';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv'; // usunięte - już załadowane w app.js
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ── ładujemy .env z katalogu backend (poziom wyżej)
-dotenv.config({ path: path.join(__dirname, '../.env') });   // ważne: absolutny path
+// dotenv.config({ path: path.join(__dirname, '../.env') });   // usunięte - już załadowane w app.js
 
 console.log('Session configuration:');
 console.log('NODE_ENV:', process.env.NODE_ENV);
