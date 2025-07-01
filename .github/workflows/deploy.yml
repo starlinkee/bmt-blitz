@@ -69,7 +69,15 @@ jobs:
 
             echo "▶ Synchronizacja bazy danych"
             node -e "
-            import('./db.js').then(async ({db}) => {
+            // Ładuj zmienne środowiskowe przed importem db.js
+            import('dotenv').then(dotenv => {
+              dotenv.config({ path: './.env' });
+              console.log('📦 Zmienne środowiskowe załadowane');
+              console.log('NODE_ENV:', process.env.NODE_ENV);
+              console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
+              
+              return import('./db.js');
+            }).then(async ({db}) => {
               console.log('🔄 Synchronizacja bazy danych...');
               await db.authenticate();
               
@@ -87,7 +95,11 @@ jobs:
 
             echo "▶ Sprawdzanie czy kolumna media_template_id już istnieje"
             if node -e "
-              import('./db.js').then(({ db }) => {
+              // Ładuj zmienne środowiskowe przed importem db.js
+              import('dotenv').then(dotenv => {
+                dotenv.config({ path: './.env' });
+                return import('./db.js');
+              }).then(({ db }) => {
                 return db.query('SELECT column_name FROM information_schema.columns WHERE table_name = \'media_records\' AND column_name = \'media_template_id\'');
               }).then(([results]) => {
                 if (results.length === 0) {
@@ -110,7 +122,11 @@ jobs:
 
             echo "▶ Sprawdzanie czy dane mediów już istnieją"
             if node -e "
-              import('./models/index.js').then(({ MediaType }) => {
+              // Ładuj zmienne środowiskowe przed importem modeli
+              import('dotenv').then(dotenv => {
+                dotenv.config({ path: './.env' });
+                return import('./models/index.js');
+              }).then(({ MediaType }) => {
                 return MediaType.findOne();
               }).then(type => {
                 if (type) {
