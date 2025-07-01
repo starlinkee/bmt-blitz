@@ -43,5 +43,13 @@ jobs:
             echo "▶ Instalowanie zależności backendu"
             npm --prefix backend install --omit=dev
 
+            echo "▶ Dodawanie kolumny media_template_id"
+            cd backend
+            node scripts/addMediaTemplateIdColumn.js
+
+            echo "▶ Dodawanie danych mediów"
+            node scripts/seedMediaData.js
+
             echo "▶ Restartowanie Passenger"
+            cd ..
             touch tmp/restart.txt
