@@ -61,6 +61,20 @@ jobs:
               echo "✅ Zaktualizowano NODE_ENV w istniejącym pliku .env"
             fi
 
+            echo "▶ Synchronizacja bazy danych"
+            node -e "
+            import('./db.js').then(async ({db}) => {
+              console.log('🔄 Synchronizacja bazy danych...');
+              await db.authenticate();
+              await db.sync({force: false});
+              console.log('✅ Baza danych zsynchronizowana');
+              process.exit(0);
+            }).catch(err => {
+              console.error('❌ Błąd synchronizacji:', err);
+              process.exit(1);
+            });
+            "
+
             echo "▶ Sprawdzanie czy kolumna media_template_id już istnieje"
             if node -e "
               import('./db.js').then(({ db }) => {
