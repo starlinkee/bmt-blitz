@@ -61,11 +61,56 @@ jobs:
               echo "✅ Zaktualizowano NODE_ENV w istniejącym pliku .env"
             fi
 
-            echo "▶ Dodawanie kolumny media_template_id"
-            node scripts/addMediaTemplateIdColumn.js
+            echo "▶ Sprawdzanie czy kolumna media_template_id już istnieje"
+            if node -e "
+              const { db } = require('./db.js');
+              const { DataTypes } = require('sequelize');
+              
+              db.query('SELECT column_name FROM information_schema.columns WHERE table_name = \'media_records\' AND column_name = \'media_template_id\'')
+                .then(([results]) => {
+                  if (results.length === 0) {
+                    console.log('Kolumna nie istnieje - dodaję...');
+                    process.exit(1);
+                  } else {
+                    console.log('Kolumna już istnieje');
+                    process.exit(0);
+                  }
+                })
+                .catch(err => {
+                  console.error('Błąd sprawdzania:', err);
+                  process.exit(1);
+                });
+            "; then
+              echo "✅ Kolumna media_template_id już istnieje"
+            else
+              echo "▶ Dodawanie kolumny media_template_id"
+              node scripts/addMediaTemplateIdColumn.js
+            fi
 
-            echo "▶ Dodawanie danych mediów"
-            node scripts/seedMediaData.js
+            echo "▶ Sprawdzanie czy dane mediów już istnieją"
+            if node -e "
+              const { MediaType } = require('./models/index.js');
+              
+              MediaType.findOne()
+                .then(type => {
+                  if (type) {
+                    console.log('Dane mediów już istnieją');
+                    process.exit(0);
+                  } else {
+                    console.log('Brak danych mediów - dodaję...');
+                    process.exit(1);
+                  }
+                })
+                .catch(err => {
+                  console.error('Błąd sprawdzania:', err);
+                  process.exit(1);
+                });
+            "; then
+              echo "✅ Dane mediów już istnieją"
+            else
+              echo "▶ Dodawanie danych mediów"
+              node scripts/seedMediaData.js
+            fi
 
             echo "▶ Restartowanie Passenger"
             cd ..
