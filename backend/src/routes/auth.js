@@ -19,7 +19,7 @@ authRouter.post('/login', async (req, res) => {
   res.json({ ok: true });
 });
 
-// POST /auth/logout
+// POST /auth/logoutt
 authRouter.post('/logout', (req, res) => {
   console.log('Logout for user:', req.session.userId);
   req.session.destroy(() => res.json({ ok: true }));
