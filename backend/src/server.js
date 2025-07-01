@@ -35,14 +35,7 @@ const allowedOrigins = [
 console.log('Setting up CORS with origins:', allowedOrigins);
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Pozwól wszystkim originom (tymczasowo)
   credentials: true
 }));
 
@@ -55,12 +48,17 @@ console.log('JSON middleware added');
 
 // Dodaj middleware do logowania wszystkich żądań
 app.use((req, res, next) => {
-  console.log('🌐 HTTP Request:', req.method, req.url);
-  console.log('📅 Timestamp:', new Date().toISOString());
-  console.log('🌍 Origin:', req.headers.origin);
-  console.log('🍪 Cookies:', req.headers.cookie);
-  console.log('---');
-  next();
+  try {
+    console.log('🌐 HTTP Request:', req.method, req.url);
+    console.log('📅 Timestamp:', new Date().toISOString());
+    console.log('🌍 Origin:', req.headers.origin || 'none');
+    console.log('🍪 Cookies:', req.headers.cookie ? 'present' : 'none');
+    console.log('---');
+    next();
+  } catch (error) {
+    console.error('Middleware error:', error);
+    next();
+  }
 });
 
 console.log('Adding session middleware...');
@@ -81,6 +79,11 @@ console.log('Routes configured');
 app.get('/health', (_, res) => {
   console.log('Health check requested');
   res.send('OK');
+});
+
+app.get('/test', (_, res) => {
+  console.log('Test endpoint requested');
+  res.json({ status: 'OK', message: 'Aplikacja działa!' });
 });
 
 app.get('/secret', authRequired, (_, res) => {
