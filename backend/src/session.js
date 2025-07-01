@@ -28,20 +28,16 @@ const sessionConfig = {
   }
 };
 
-// Używaj PostgreSQL store tylko na produkcji
-if (process.env.NODE_ENV === 'production') {
-  console.log('Using PostgreSQL session store');
-  sessionConfig.store = new PostgresStore({
-    conObject: {
-      connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-    },
-    tableName: 'sessions',
-    createTableIfMissing: true
-  });
-} else {
-  console.log('Using MemoryStore for sessions');
-}
+// Tymczasowo używaj MemoryStore dla wszystkich środowisk
+console.log('Using MemoryStore for sessions (temporary)');
+// sessionConfig.store = new PostgresStore({
+//   conObject: {
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: { rejectUnauthorized: false },
+//   },
+//   tableName: 'sessions',
+//   createTableIfMissing: true
+// });
 
 console.log('Session middleware configured');
 
