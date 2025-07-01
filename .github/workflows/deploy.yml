@@ -66,6 +66,17 @@ jobs:
               fi
               echo "✅ Zaktualizowano NODE_ENV w istniejącym pliku .env"
             fi
+            
+            # Dodaj DATABASE_URL i SESSION_SECRET jeśli nie istnieją
+            if ! grep -q "DATABASE_URL" .env; then
+              echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+              echo "✅ Dodano DATABASE_URL"
+            fi
+            
+            if ! grep -q "SESSION_SECRET" .env; then
+              echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
+              echo "✅ Dodano SESSION_SECRET"
+            fi
 
             echo "▶ Synchronizacja bazy danych"
             node -e "
