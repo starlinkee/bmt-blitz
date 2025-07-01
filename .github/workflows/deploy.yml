@@ -43,8 +43,11 @@ jobs:
             echo "▶ Instalowanie zależności backendu"
             npm --prefix backend install --omit=dev
 
-            echo "▶ Dodawanie kolumny media_template_id"
+            echo "▶ Ustawianie zmiennych środowiskowych"
             cd backend
+            echo "NODE_ENV=production" > .env
+
+            echo "▶ Dodawanie kolumny media_template_id"
             node scripts/addMediaTemplateIdColumn.js
 
             echo "▶ Dodawanie danych mediów"
