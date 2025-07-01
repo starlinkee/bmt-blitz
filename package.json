@@ -1,9 +1,10 @@
 {
-  "type": "module",
   "name": "bmt-blitz",
   "version": "1.0.0",
+  "type": "module",
   "main": "app.js",
   "scripts": {
+    "dev": "cd backend && npm run dev",
     "start": "node app.js"
   },
   "dependencies": {
@@ -19,5 +20,6 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
     "slownie": "^1.0.1"
-  }
+  },
+  "description": "BMT Blitz - aplikacja do zarządzania fakturami i mediami"
 }

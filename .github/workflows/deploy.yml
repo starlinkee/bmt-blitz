@@ -45,6 +45,9 @@ jobs:
             rm -rf node_modules package-lock.json
             npm install --omit=dev
             cd ..
+            
+            echo "▶ Instalowanie zależności głównego katalogu"
+            npm install --omit=dev
 
             echo "▶ Sprawdzanie zmiennych środowiskowych"
             cd backend
