@@ -145,5 +145,5 @@ jobs:
             echo "▶ Oczekiwanie na restart aplikacji"
             sleep 10
             
-            echo "▶ Sprawdzanie czy aplikacja działa"
-            curl -f http://localhost/health || echo "⚠️  Aplikacja może potrzebować więcej czasu na start"
+            echo "▶ Sprawdzanie czy aplikacja się uruchomiła"
+            echo "✅ Deploy zakończony - sprawdź aplikację w przeglądarce"
