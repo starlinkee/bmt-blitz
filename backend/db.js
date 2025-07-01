@@ -60,10 +60,11 @@ if (process.env.DATABASE_URL) {
   // ── sprawdź czy to PostgreSQL
   if (process.env.DATABASE_URL.includes('postgres')) {
     config.dialect = 'postgres';
+    // Wyłącz SSL - serwer nie obsługuje
     config.dialectOptions = {
-      ssl: { rejectUnauthorized: false }
+      ssl: false
     };
-    console.log('PostgreSQL connection with SSL');
+    console.log('PostgreSQL connection WITHOUT SSL (server does not support SSL)');
   }
 } else {
   // ── fallback dla SQLite (development)
