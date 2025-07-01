@@ -43,9 +43,21 @@ jobs:
             echo "▶ Instalowanie zależności backendu"
             npm --prefix backend install --omit=dev
 
-            echo "▶ Ustawianie zmiennych środowiskowych"
+            echo "▶ Sprawdzanie zmiennych środowiskowych"
             cd backend
-            echo "NODE_ENV=production" > .env
+            # Sprawdź czy .env istnieje, jeśli nie - utwórz z NODE_ENV
+            if [ ! -f .env ]; then
+              echo "NODE_ENV=production" > .env
+              echo "⚠️  Utworzono plik .env - ustaw DATABASE_URL i SESSION_SECRET ręcznie"
+            else
+              # Dodaj/aktualizuj tylko NODE_ENV
+              if grep -q "NODE_ENV" .env; then
+                sed -i 's/NODE_ENV=.*/NODE_ENV=production/' .env
+              else
+                echo "NODE_ENV=production" >> .env
+              fi
+              echo "✅ Zaktualizowano NODE_ENV w istniejącym pliku .env"
+            fi
 
             echo "▶ Dodawanie kolumny media_template_id"
             node scripts/addMediaTemplateIdColumn.js
