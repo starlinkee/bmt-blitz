@@ -10,7 +10,7 @@ PassengerEnabled on
 # Set environment
 SetEnv NODE_ENV production
 
-# Handle all requests through Passengerl
+# Handle all requests through Passengerlf
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
