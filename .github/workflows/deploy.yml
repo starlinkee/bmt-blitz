@@ -160,7 +160,8 @@ jobs:
             sleep 10
             
             echo "▶ Testowanie endpointów"
-            node scripts/testEndpoints.js
+            cd backend
+            node scripts/quickTest.js
             
             echo "▶ Sprawdzanie czy aplikacja się uruchomiła"
             echo "✅ Deploy zakończony - sprawdź aplikację w przeglądarce"

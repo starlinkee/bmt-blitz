@@ -30,6 +30,12 @@ const app = express();
 
 console.log('Express app created');
 
+// ── Endpoint testowy (działa przed wszystkimi middleware) ──────────────────
+app.get('/ping', (_, res) => {
+  console.log('🏓 Ping endpoint hit');
+  res.send('pong');
+});
+
 // ── CORS ──────────────────────────────────────────────────────
 const allowedOrigins = [
   'http://localhost',
@@ -41,8 +47,28 @@ const allowedOrigins = [
 console.log('Setting up CORS with origins:', allowedOrigins);
 
 app.use(cors({
-  origin: true, // Pozwól wszystkim originom (tymczasowo)
-  credentials: true
+  origin: function (origin, callback) {
+    console.log('🌍 CORS request from origin:', origin);
+    
+    // Pozwól na żądania bez origin (np. Postman, curl)
+    if (!origin) {
+      console.log('✅ Allowing request without origin');
+      return callback(null, true);
+    }
+    
+    // Sprawdź czy origin jest na liście dozwolonych
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('✅ Origin allowed:', origin);
+      return callback(null, true);
+    }
+    
+    console.log('⚠️  Origin not in allowed list:', origin);
+    console.log('✅ Allowing anyway (temporary)');
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 console.log('CORS configured');
@@ -162,6 +188,7 @@ const init = async () => {
     if (isPassenger) {
       console.log('✅ Running under Passenger – Express handler ready');
       console.log('📝 App exported for Passenger');
+      console.log('🚀 Application is ready to handle requests');
     } else {
       console.log('🖥️  Running standalone - starting server...');
       app.listen(PORT, () => {
@@ -169,6 +196,16 @@ const init = async () => {
         console.log(`🌍 Access at: http://localhost:${PORT}`);
       });
     }
+    
+    // Dodatkowe sprawdzenie czy aplikacja jest gotowa
+    console.log('🎯 Application initialization completed');
+    console.log('📊 Available endpoints:');
+    console.log('  - GET /health (health check)');
+    console.log('  - GET /test (test endpoint)');
+    console.log('  - GET /debug (debug info)');
+    console.log('  - POST /auth/login (login)');
+    console.log('  - GET /invoices (invoices)');
+    console.log('  - GET /media (media)');
   } catch (err) {
     console.error('❌ DB error:', err);
     console.error('🔍 Error details:', {

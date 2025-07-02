@@ -8,6 +8,7 @@ console.log('🧪 Testing endpoints');
 console.log('===================');
 
 const endpoints = [
+  '/ping',
   '/health',
   '/test', 
   '/debug'
