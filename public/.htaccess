@@ -1,0 +1,17 @@
+# Passenger configuration
+PassengerNodejs /usr/local/bin/node
+PassengerAppRoot /usr/home/***/domains/bmt.googlenfc.smallhost.pl/public_nodejs
+PassengerAppType node
+PassengerStartupFile app.js
+
+# Enable Passenger
+PassengerEnabled on
+
+# Set environment
+SetEnv NODE_ENV production
+
+# Handle all requests through Passenger
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ / [QSA,L] 

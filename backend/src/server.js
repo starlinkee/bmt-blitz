@@ -222,4 +222,18 @@ init();
 
 // 🟡 Export handler do Passenger
 console.log('📤 Exporting app for Passenger');
+console.log('📋 App export details:');
+console.log('  - App type:', typeof app);
+console.log('  - App.use exists:', !!app.use);
+console.log('  - App.get exists:', !!app.get);
+console.log('  - App.listen exists:', !!app.listen);
+console.log('  - App._router exists:', !!app._router);
+
+// Dodaj sprawdzenie czy aplikacja jest gotowa
+if (typeof app === 'function' && app.use && app.get) {
+  console.log('✅ App is properly configured Express application');
+} else {
+  console.log('❌ App is not properly configured Express application');
+}
+
 export default app;

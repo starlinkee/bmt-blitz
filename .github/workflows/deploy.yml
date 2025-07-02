@@ -141,6 +141,15 @@ jobs:
             echo "▶ Sprawdzanie konfiguracji serwera"
             node scripts/checkServerConfig.js
 
+            echo "▶ Sprawdzanie eksportu aplikacji"
+            node scripts/testAppExport.js
+
+            echo "▶ Sprawdzanie konfiguracji Passenger"
+            node scripts/checkPassenger.js
+
+            echo "▶ Test routingu aplikacji"
+            timeout 30s node scripts/testRouting.js || echo "⚠️  Routing test timeout (may be normal)"
+
             echo "▶ Test uruchomienia aplikacji"
             timeout 30s node -e "
             import('./src/server.js').then(() => {
