@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createServer } from 'http';
+const { createServer } = require('http');
 
 console.log('🧪 Testing app routing');
 console.log('======================');

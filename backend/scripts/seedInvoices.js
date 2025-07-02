@@ -1,9 +1,9 @@
 // scripts/seedInvoices.js
 
-import { Invoice } from '../models/Invoice.js';
-import { Client } from '../models/Client.js';
-import { db } from '../db.js';
-import '../models/index.js';
+const { Invoice } = require('../models/Invoice.js');
+const { Client } = require('../models/Client.js');
+const { db } = require('../db.js');
+require('../models/index.js');
 
 try {
   await db.sync();

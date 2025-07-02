@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const BASE_URL = 'https://bmt.googlenfc.smallhost.pl';
 

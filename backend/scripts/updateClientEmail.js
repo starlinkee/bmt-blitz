@@ -1,5 +1,5 @@
-import { db } from '../db.js';
-import { Client } from '../models/Client.js';
+const { db } = require('../db.js');
+const { Client } = require('../models/Client.js');
 
 (async () => {
   try {

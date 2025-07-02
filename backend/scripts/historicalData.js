@@ -1,7 +1,7 @@
-import { db as sequelize } from '../db.js';
+const { db: sequelize } = require('../db.js');
 
 // Import modeli z index.js (gdzie są już zainicjalizowane)
-import { 
+const { 
   Client, 
   Invoice, 
   MediaType, 
@@ -9,7 +9,7 @@ import {
   MediaRecord, 
   MediaVariable, 
   MediaAttachment 
-} from '../models/index.js';
+} = require('../models/index.js');
 
 const run = async () => {
   console.log('🔍 Debug - sprawdzanie modeli:');

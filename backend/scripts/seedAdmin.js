@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import { User } from '../models/index.js';
+const bcrypt = require('bcrypt');
+const { User } = require('../models/index.js');
 
 const run = async () => {
   console.log('🔐 Sprawdzanie administratora...');

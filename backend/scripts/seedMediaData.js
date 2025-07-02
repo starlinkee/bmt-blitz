@@ -1,10 +1,10 @@
-import { 
+const { 
   Client, 
   MediaType, 
   MediaTemplate, 
   ClientMediaTemplate,
   sequelize 
-} from '../models/index.js';
+} = require('../models/index.js');
 
 const seedMediaData = async () => {
   try {

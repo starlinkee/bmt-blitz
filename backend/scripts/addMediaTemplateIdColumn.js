@@ -1,4 +1,4 @@
-import { db as sequelize } from '../db.js';
+const { db: sequelize } = require('../db.js');
 
 const addMediaTemplateIdColumn = async () => {
   try {

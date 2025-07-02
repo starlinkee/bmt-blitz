@@ -1,6 +1,6 @@
-import { InvoiceSettings } from '../models/InvoiceSettings.js';
-import { db } from '../db.js';
-import '../models/index.js';
+const { InvoiceSettings } = require('../models/InvoiceSettings.js');
+const { db } = require('../db.js');
+require('../models/index.js');
 
 await db.sync();
 

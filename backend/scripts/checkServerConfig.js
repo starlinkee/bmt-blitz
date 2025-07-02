@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dotenv = require('dotenv');
+const path = require('path');
+const fs = require('fs');
 
 console.log('🔍 Server Configuration Check');
 console.log('============================');
@@ -14,7 +12,6 @@ const envPath = path.join(__dirname, '..', '.env');
 console.log('📁 .env file path:', envPath);
 
 try {
-  const fs = await import('fs');
   const envExists = fs.existsSync(envPath);
   console.log('✅ .env file exists:', envExists);
   
@@ -57,8 +54,6 @@ if (process.env.DATABASE_URL) {
 console.log('\n📂 File System Check:');
 console.log('====================');
 try {
-  const fs = await import('fs');
-  
   const files = [
     '../app.js',
     '../src/server.js',

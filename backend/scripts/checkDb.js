@@ -1,5 +1,5 @@
-import { db } from '../db.js';
-import '../models/index.js';
+const { db } = require('../db.js');
+require('../models/index.js');
 
 const checkDatabase = async () => {
   try {
