@@ -191,10 +191,7 @@ const init = async () => {
       console.log('🚀 Application is ready to handle requests');
     } else {
       console.log('🖥️  Running standalone - starting server...');
-      app.listen(PORT, () => {
-        console.log(`✅ Server running on port ${PORT}`);
-        console.log(`🌍 Access at: http://localhost:${PORT}`);
-      });
+      console.log('✅ App ready for Passenger (no listen needed)');
     }
     
     // Dodatkowe sprawdzenie czy aplikacja jest gotowa

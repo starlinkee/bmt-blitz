@@ -141,6 +141,12 @@ jobs:
             echo "▶ Sprawdzanie konfiguracji serwera"
             node scripts/checkServerConfig.js
 
+            echo "▶ Sprawdzanie struktury katalogów"
+            node scripts/checkStructure.js
+
+            echo "▶ Sprawdzanie katalogu public"
+            node scripts/checkPublicDir.js
+
             echo "▶ Sprawdzanie eksportu aplikacji"
             node scripts/testAppExport.js
 

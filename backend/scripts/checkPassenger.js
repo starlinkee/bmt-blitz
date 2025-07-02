@@ -91,4 +91,6 @@ async function checkPassenger() {
   } catch (error) {
     console.error('❌ Error during Passenger check:', error);
   }
- 
+}
+
+checkPassenger(); 
