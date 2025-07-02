@@ -1,7 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
 
 console.log('🚀 Starting server initialization...');
 console.log('📋 Environment variables:');
@@ -11,18 +10,18 @@ console.log('  PORT:', process.env.PORT);
 console.log('  DATABASE_URL exists:', !!process.env.DATABASE_URL);
 console.log('  SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
 
-import { db as sequelize } from '../db.js'; // zmieniono na alias zgodny z index.js
-import {
+const { db: sequelize } = require('../db.js'); // zmieniono na alias zgodny z index.js
+const {
   User, Client, Invoice, InvoiceBatch, InvoiceSettings,
   MediaType, MediaTemplate, MediaRecord, MediaVariable, MediaAttachment
-} from '../models/index.js'; // wymuszenie załadowania modeli i relacji
+} = require('../models/index.js'); // wymuszenie załadowania modeli i relacji
 
 console.log('Models imported successfully');
 
-import { sessionMiddleware } from './session.js';
-import { authRouter, authRequired } from './routes/auth.js';
-import { invoiceRouter } from './routes/invoices.js';
-import mediaRouter from './routes/media.js';
+const { sessionMiddleware } = require('./session.js');
+const { authRouter, authRequired } = require('./routes/auth.js');
+const { invoiceRouter } = require('./routes/invoices.js');
+const mediaRouter = require('./routes/media.js');
 
 console.log('Routes imported successfully');
 
@@ -233,4 +232,4 @@ if (typeof app === 'function' && app.use && app.get) {
   console.log('❌ App is not properly configured Express application');
 }
 
-export default app;
+module.exports = app;
