@@ -8,10 +8,4 @@ PassengerStartupFile app.js
 PassengerEnabled on
 
 # Set environment
-SetEnv NODE_ENV production
-
-# Handle all requests through Passenger
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ / [QSA,L] 
+SetEnv NODE_ENV production 
