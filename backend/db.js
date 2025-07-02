@@ -1,11 +1,7 @@
 // db.js
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// ── ustalamy katalog bieżącego pliku
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
+const path = require('path');
 
 // ── ładujemy .env z katalogu backend
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -115,7 +111,9 @@ console.log('📋 Final config:', {
 
 console.log('💾 Database file path:', config.storage || config.database);
 
-export const db = new Sequelize(config);
+const db = new Sequelize(config);
+
+module.exports = { db };
 
 // ── test połączenia z lepszym logowaniem
 db.authenticate()

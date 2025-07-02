@@ -1,10 +1,10 @@
-import { InvoiceSettings } from '../../models/InvoiceSettings.js';
+const { InvoiceSettings } = require('../../models/InvoiceSettings.js');
 
 /**
  * Pobiera ustawienia faktur z bazy danych
  * @returns {Promise<Object>} Ustawienia faktur
  */
-export async function getInvoiceSettings() {
+async function getInvoiceSettings() {
   try {
     // Pobierz pierwszy (i jedyny) rekord ustawień
     const settings = await InvoiceSettings.findOne();
@@ -44,7 +44,7 @@ export async function getInvoiceSettings() {
  * @param {Object} newSettings - Nowe ustawienia
  * @returns {Promise<Object>} Zaktualizowane ustawienia
  */
-export async function updateInvoiceSettings(newSettings) {
+async function updateInvoiceSettings(newSettings) {
   try {
     let settings = await InvoiceSettings.findOne();
     
@@ -61,4 +61,6 @@ export async function updateInvoiceSettings(newSettings) {
     console.error('Błąd podczas aktualizacji ustawień faktur:', error);
     throw error;
   }
-} 
+}
+
+module.exports = { getInvoiceSettings, updateInvoiceSettings };

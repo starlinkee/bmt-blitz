@@ -1,5 +1,5 @@
-import express from 'express';
-import { 
+const express = require('express');
+const { 
   Client, 
   MediaType, 
   MediaTemplate, 
@@ -7,7 +7,7 @@ import {
   MediaRecord, 
   MediaBatch,
   sequelize 
-} from '../../models/index.js';
+} = require('../../models/index.js');
 
 const router = express.Router();
 
@@ -174,4 +174,4 @@ router.get('/records', async (req, res) => {
   }
 });
 
-export default router; 
+module.exports = router; 

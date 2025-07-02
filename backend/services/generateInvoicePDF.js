@@ -1,15 +1,13 @@
-import fs from 'fs/promises';
-import fsSync from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import PDFDocument from 'pdfkit';
-import { getInvoiceSettings } from './db/invoiceSettings.js';
-import slownieModule from 'slownie';
+const fs = require('fs/promises');
+const fsSync = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
+const { getInvoiceSettings } = require('./db/invoiceSettings.js');
+const slownieModule = require('slownie');
 
 const slownie = (value) => new slownieModule.Slownie(value).get(value);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export async function generateInvoicePDF(invoiceData) {
+async function generateInvoicePDF(invoiceData) {
   const settings = await getInvoiceSettings();
   if (!settings) throw new Error('Brak ustawień faktury w bazie danych');
 
@@ -273,3 +271,5 @@ export async function generateInvoicePDF(invoiceData) {
     stream.on('error', reject);
   });
 }
+
+module.exports = { generateInvoicePDF };

@@ -1,8 +1,8 @@
 // backend/models/Client.js
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const Client = db.define('Client', {
+const Client = db.define('Client', {
   name:       { type: DataTypes.STRING,  allowNull: false },
   email:      { type: DataTypes.STRING,  allowNull: false, validate: { isEmail: true } },
   address:    { type: DataTypes.TEXT },
@@ -11,3 +11,5 @@ export const Client = db.define('Client', {
   tableName: 'clients',
   timestamps: true
 });
+
+module.exports = { Client };

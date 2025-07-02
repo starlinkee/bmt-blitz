@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const MediaBatch = db.define('MediaBatch', {
+const MediaBatch = db.define('MediaBatch', {
   month: {
     type: DataTypes.STRING(7), // format: "2025-07"
     allowNull: false,
@@ -15,4 +15,6 @@ export const MediaBatch = db.define('MediaBatch', {
 }, {
   tableName: 'media_batches',
   timestamps: false
-}); 
+});
+
+module.exports = { MediaBatch };

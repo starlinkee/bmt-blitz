@@ -1,21 +1,21 @@
-import { Sequelize } from 'sequelize';
-import { db as sequelize } from '../db.js';
+const { Sequelize } = require('sequelize');
+const { db: sequelize } = require('../db.js');
 
 // Modele główne
-import { User } from './User.js';
-import { Client } from './Client.js';
-import { Invoice } from './Invoice.js';
-import { InvoiceBatch } from './InvoiceBatch.js';
-import { InvoiceSettings } from './InvoiceSettings.js';
-import { MediaBatch } from './MediaBatch.js';
+const { User } = require('./User.js');
+const { Client } = require('./Client.js');
+const { Invoice } = require('./Invoice.js');
+const { InvoiceBatch } = require('./InvoiceBatch.js');
+const { InvoiceSettings } = require('./InvoiceSettings.js');
+const { MediaBatch } = require('./MediaBatch.js');
 
 // Modele mediów
-import { MediaType } from './MediaType.js';
-import { MediaTemplate } from './MediaTemplate.js';
-import { MediaRecord } from './MediaRecord.js';
-import { MediaVariable } from './MediaVariable.js';
-import { MediaAttachment } from './MediaAttachment.js';
-import { ClientMediaTemplate } from './ClientMediaTemplate.js';
+const { MediaType } = require('./MediaType.js');
+const { MediaTemplate } = require('./MediaTemplate.js');
+const { MediaRecord } = require('./MediaRecord.js');
+const { MediaVariable } = require('./MediaVariable.js');
+const { MediaAttachment } = require('./MediaAttachment.js');
+const { ClientMediaTemplate } = require('./ClientMediaTemplate.js');
 
 // Wszystkie modele są już zainicjalizowane w swoich plikach
 
@@ -48,7 +48,7 @@ MediaTemplate.hasMany(ClientMediaTemplate, { foreignKey: 'media_template_id', as
 ClientMediaTemplate.belongsTo(MediaTemplate, { foreignKey: 'media_template_id', as: 'MediaTemplate' });
 
 // Eksport
-export {
+module.exports = {
   sequelize,
   User,
   Client,

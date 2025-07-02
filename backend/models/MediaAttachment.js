@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const MediaAttachment = db.define('MediaAttachment', {
+const MediaAttachment = db.define('MediaAttachment', {
   file_path: DataTypes.STRING,
   original_name: DataTypes.STRING,
   uploaded_at: DataTypes.DATE
@@ -9,4 +9,5 @@ export const MediaAttachment = db.define('MediaAttachment', {
   tableName: 'media_attachments',
   timestamps: true
 });
-  
+
+module.exports = { MediaAttachment };

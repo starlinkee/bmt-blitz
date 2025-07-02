@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const Invoice = db.define('Invoice', {
+const Invoice = db.define('Invoice', {
   number:      { type: DataTypes.STRING,  allowNull: false, unique: true },
   type:        { type: DataTypes.ENUM('RENT', 'MEDIA'), allowNull: false },
   periodStart: { type: DataTypes.DATE,    allowNull: false },
@@ -20,4 +20,4 @@ export const Invoice = db.define('Invoice', {
   timestamps: true
 });
 
-
+module.exports = { Invoice };

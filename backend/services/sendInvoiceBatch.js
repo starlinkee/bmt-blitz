@@ -1,11 +1,11 @@
-import { Client } from '../models/Client.js';
-import { InvoiceBatch } from '../models/InvoiceBatch.js';
-import { generateInvoicePDF } from './generateInvoicePDF.js';
-import { sendInvoiceEmail } from './sendInvoice.js';
-import { getInvoiceSettings } from './db/invoiceSettings.js';
-import slownie from 'slownie';
+const { Client } = require('../models/Client.js');
+const { InvoiceBatch } = require('../models/InvoiceBatch.js');
+const { generateInvoicePDF } = require('./generateInvoicePDF.js');
+const { sendInvoiceEmail } = require('./sendInvoice.js');
+const { getInvoiceSettings } = require('./db/invoiceSettings.js');
+const slownie = require('slownie');
 
-export async function sendMonthlyInvoices() {
+async function sendMonthlyInvoices() {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -80,3 +80,5 @@ function getPolishMonthName(month) {
   ];
   return months[parseInt(month, 10)];
 }
+
+module.exports = { sendMonthlyInvoices };

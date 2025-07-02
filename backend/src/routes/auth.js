@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import bcrypt from 'bcrypt';
-import { User } from '../../models/User.js';
+const { Router } = require('express');
+const bcrypt = require('bcrypt');
+const { User } = require('../../models/User.js');
 
-export const authRouter = Router();
+const authRouter = Router();
 
 // POST /auth/login { email, password }d
 authRouter.post('/login', async (req, res) => {
@@ -26,7 +26,7 @@ authRouter.post('/logout', (req, res) => {
 });
 
 // guard
-export function authRequired(req, res, next) {
+function authRequired(req, res, next) {
   if (!req.session.userId) return res.status(401).json({ error: 'Unauthenticated' });
   next();
 }
@@ -50,3 +50,5 @@ authRouter.get('/me', (req, res) => {
   console.log('📤 Sending response with user ID');
   res.json({ id: req.session.userId });
 });
+
+module.exports = { authRouter, authRequired };

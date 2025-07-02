@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const MediaType = db.define('MediaType', {
+const MediaType = db.define('MediaType', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -11,4 +11,5 @@ export const MediaType = db.define('MediaType', {
   tableName: 'media_types',
   timestamps: true
 });
-  
+
+module.exports = { MediaType };

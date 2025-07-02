@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const InvoiceBatch = db.define('InvoiceBatch', {
+const InvoiceBatch = db.define('InvoiceBatch', {
   month: {
     type: DataTypes.STRING(7),
     allowNull: false,
@@ -15,3 +15,5 @@ export const InvoiceBatch = db.define('InvoiceBatch', {
   tableName: 'invoice_batches',
   timestamps: false
 });
+
+module.exports = { InvoiceBatch };

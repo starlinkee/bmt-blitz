@@ -1,8 +1,8 @@
 // backend/models/User.js
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const User = db.define('User', {
+const User = db.define('User', {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,3 +17,5 @@ export const User = db.define('User', {
   tableName: 'users',
   timestamps: true
 });
+
+module.exports = { User };

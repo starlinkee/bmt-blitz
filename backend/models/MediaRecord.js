@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const MediaRecord = db.define('MediaRecord', {
+const MediaRecord = db.define('MediaRecord', {
   client_id: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -27,4 +27,5 @@ export const MediaRecord = db.define('MediaRecord', {
   underscored: true,
   timestamps: false
 });
-  
+
+module.exports = { MediaRecord };

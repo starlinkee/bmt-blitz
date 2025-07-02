@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const InvoiceSettings = db.define('InvoiceSettings', {
+const InvoiceSettings = db.define('InvoiceSettings', {
   seller_name: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -36,4 +36,6 @@ export const InvoiceSettings = db.define('InvoiceSettings', {
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: 'updated_at'
-}); 
+});
+
+module.exports = { InvoiceSettings };

@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer';
-import fs from 'fs/promises';
+const nodemailer = require('nodemailer');
+const fs = require('fs/promises');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export async function sendInvoiceEmail(recipientEmail, filePath) {
+async function sendInvoiceEmail(recipientEmail, filePath) {
   const attachment = await fs.readFile(filePath);
 
   const mailOptions = {
@@ -27,3 +27,5 @@ export async function sendInvoiceEmail(recipientEmail, filePath) {
 
   return transporter.sendMail(mailOptions);
 }
+
+module.exports = { sendInvoiceEmail };

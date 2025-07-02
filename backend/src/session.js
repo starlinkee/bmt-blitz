@@ -1,11 +1,7 @@
-import session from 'express-session';
-import pgSimple from 'connect-pg-simple';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// ── ustalamy katalog bieżącego pliku (src)
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const session = require('express-session');
+const pgSimple = require('connect-pg-simple');
+const dotenv = require('dotenv');
+const path = require('path');
 
 // ── ładujemy .env z katalogu backend (poziom wyżej)
 dotenv.config({ path: path.join(__dirname, '../.env') });   // ważne: absolutny path
@@ -51,4 +47,6 @@ console.log('Reason: PostgreSQL store causing hangs');
 
 console.log('Session middleware configured');
 
-export const sessionMiddleware = session(sessionConfig);
+const sessionMiddleware = session(sessionConfig);
+
+module.exports = { sessionMiddleware };

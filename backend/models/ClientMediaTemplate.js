@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const ClientMediaTemplate = db.define('ClientMediaTemplate', {
+const ClientMediaTemplate = db.define('ClientMediaTemplate', {
   label: {
     type: DataTypes.STRING,
     allowNull: false
@@ -15,3 +15,5 @@ export const ClientMediaTemplate = db.define('ClientMediaTemplate', {
   underscored: true,
   timestamps: false
 });
+
+module.exports = { ClientMediaTemplate };

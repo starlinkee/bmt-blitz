@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import { Invoice } from '../../models/Invoice.js';
-import { Client } from '../../models/Client.js'; 
-import { authRequired } from './auth.js';
-import { sendMonthlyInvoices } from '../../services/sendInvoiceBatch.js';
+const { Router } = require('express');
+const { Invoice } = require('../../models/Invoice.js');
+const { Client } = require('../../models/Client.js'); 
+const { authRequired } = require('./auth.js');
+const { sendMonthlyInvoices } = require('../../services/sendInvoiceBatch.js');
 
-export const invoiceRouter = Router();
+const invoiceRouter = Router();
 
 // GET /invoices
 invoiceRouter.get('/', authRequired, async (req, res) => {
@@ -45,3 +45,5 @@ invoiceRouter.post('/send-monthly', authRequired, async (req, res) => {
     return res.status(500).json({ message: 'Błąd serwera' });
   }
 });
+
+module.exports = { invoiceRouter };

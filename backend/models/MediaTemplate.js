@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
-import { db } from '../db.js';
+const { DataTypes } = require('sequelize');
+const { db } = require('../db.js');
 
-export const MediaTemplate = db.define('MediaTemplate', {
+const MediaTemplate = db.define('MediaTemplate', {
   media_type_id: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -21,4 +21,5 @@ export const MediaTemplate = db.define('MediaTemplate', {
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
-  
+
+module.exports = { MediaTemplate };
