@@ -135,8 +135,12 @@ jobs:
             echo "▶ Sprawdzanie czy app.js istnieje"
             if [ ! -f app.js ]; then
               echo "⚠️  Brak app.js - tworzę..."
-              echo "import app from './src/server.js'; export default app;" > app.js
+              echo "const app = require('./backend/src/server.js'); module.exports = app;" > app.js
             fi
+            
+            echo "▶ Sprawdzanie package.json files"
+            find . -name "package.json" -exec echo "Found: {}" \;
+            find . -name "package.json" -exec grep -l '"type": "module"' {} \; || echo "No package.json with type: module found"
 
             echo "▶ Sprawdzanie konfiguracji serwera"
             node scripts/checkServerConfig.js
@@ -169,10 +173,17 @@ jobs:
 
             echo "▶ Restartowanie Passenger"
             cd ..
+            
+            # Wyczyść cache Node.js i wymuś restart
+            echo "▶ Czyszczenie cache Node.js"
+            rm -rf node_modules/.cache 2>/dev/null || true
+            rm -rf backend/node_modules/.cache 2>/dev/null || true
+            
+            # Wymuś restart Passenger
             touch tmp/restart.txt
             
             echo "▶ Oczekiwanie na restart aplikacji"
-            sleep 10
+            sleep 15
             
             echo "▶ Testowanie endpointów"
             cd backend

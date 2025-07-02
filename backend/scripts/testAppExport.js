@@ -3,9 +3,10 @@
 console.log('🧪 Testing app export');
 console.log('=====================');
 
-try {
-  console.log('🔄 Importing app from main directory...');
-  const app = await import('../app.js');
+(async () => {
+  try {
+    console.log('🔄 Importing app from main directory...');
+    const app = await import('../app.js');
   
   console.log('✅ App imported successfully');
   console.log('📋 App type:', typeof app.default);
@@ -45,4 +46,5 @@ try {
   });
 }
 
-console.log('\n✅ App export test completed'); 
+console.log('\n✅ App export test completed');
+})(); 
