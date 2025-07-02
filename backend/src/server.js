@@ -3,7 +3,13 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-console.log('Starting server initialization...');
+console.log('🚀 Starting server initialization...');
+console.log('📋 Environment variables:');
+console.log('  NODE_ENV:', process.env.NODE_ENV);
+console.log('  PASSENGER_APP_ENV:', process.env.PASSENGER_APP_ENV);
+console.log('  PORT:', process.env.PORT);
+console.log('  DATABASE_URL exists:', !!process.env.DATABASE_URL);
+console.log('  SESSION_SECRET exists:', !!process.env.SESSION_SECRET);
 
 import { db as sequelize } from '../db.js'; // zmieniono na alias zgodny z index.js
 import {
@@ -53,11 +59,29 @@ app.use((req, res, next) => {
     console.log('📅 Timestamp:', new Date().toISOString());
     console.log('🌍 Origin:', req.headers.origin || 'none');
     console.log('🍪 Cookies:', req.headers.cookie ? 'present' : 'none');
+    console.log('👤 User-Agent:', req.headers['user-agent']?.substring(0, 50) || 'none');
     console.log('---');
     next();
   } catch (error) {
-    console.error('Middleware error:', error);
+    console.error('❌ Middleware error:', error);
     next();
+  }
+});
+
+// Dodaj middleware do obsługi błędów
+app.use((error, req, res, next) => {
+  console.error('❌ Global error handler:', error);
+  console.error('📋 Request details:', {
+    method: req.method,
+    url: req.url,
+    headers: req.headers
+  });
+  
+  if (!res.headersSent) {
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+    });
   }
 });
 
@@ -75,50 +99,90 @@ app.use('/media', mediaRouter);
 
 console.log('Routes configured');
 
-// ── Testowe endpointy ─────────────────────────────────────────
+// ── Testowe endpointy (działają bez bazy danych) ─────────────────────────
 app.get('/health', (_, res) => {
-  console.log('Health check requested');
+  console.log('🏥 Health check requested');
   res.send('OK');
 });
 
 app.get('/test', (_, res) => {
-  console.log('Test endpoint requested');
-  res.json({ status: 'OK', message: 'Aplikacja działa!' });
+  console.log('🧪 Test endpoint requested');
+  res.json({ 
+    status: 'OK', 
+    message: 'Aplikacja działa!',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    passenger: !!process.env.PASSENGER_APP_ENV
+  });
+});
+
+app.get('/debug', (_, res) => {
+  console.log('🐛 Debug endpoint requested');
+  res.json({
+    nodeEnv: process.env.NODE_ENV,
+    passengerAppEnv: process.env.PASSENGER_APP_ENV,
+    passengerVersion: process.env.PHUSION_PASSENGER_VERSION,
+    port: process.env.PORT,
+    hasDatabaseUrl: !!process.env.DATABASE_URL,
+    hasSessionSecret: !!process.env.SESSION_SECRET,
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.get('/secret', authRequired, (_, res) => {
-  console.log('Secret endpoint accessed');
+  console.log('🔒 Secret endpoint accessed');
   res.send('Only admin!');
 });
 
-console.log('Test endpoints configured');
+console.log('✅ Test endpoints configured');
 
 // ── Init DB + Start server ────────────────────────────────────
 const init = async () => {
   try {
-    console.log('Starting database initialization...');
+    console.log('🔄 Starting database initialization...');
     await sequelize.authenticate();
-    console.log('Database authenticated');
+    console.log('✅ Database authenticated');
     
     await sequelize.sync({ force: false }); // bezpieczne - nie zmienia struktury
-    console.log('Database synced');
+    console.log('✅ Database synced');
 
     const PORT = process.env.PORT || 3000;
+    console.log('🌐 Port configuration:', PORT);
 
-    // Jeśli uruchamiasz przez Passenger, NIE rób listen()
-    if (process.env.NODE_ENV === 'production' && process.env.PASSENGER_APP_ENV) {
-      console.log('Running under Passenger – Express handler ready');
+    // Sprawdzanie czy działamy pod Passenger
+    const isPassenger = process.env.PASSENGER_APP_ENV || 
+                       process.env.NODE_ENV === 'production' && 
+                       process.env.PHUSION_PASSENGER_VERSION;
+    
+    console.log('🚌 Passenger detection:');
+    console.log('  PASSENGER_APP_ENV:', process.env.PASSENGER_APP_ENV);
+    console.log('  PHUSION_PASSENGER_VERSION:', process.env.PHUSION_PASSENGER_VERSION);
+    console.log('  Is Passenger detected:', isPassenger);
+
+    if (isPassenger) {
+      console.log('✅ Running under Passenger – Express handler ready');
+      console.log('📝 App exported for Passenger');
     } else {
-      app.listen(PORT, () => console.log(`Server running on :${PORT}`));
+      console.log('🖥️  Running standalone - starting server...');
+      app.listen(PORT, () => {
+        console.log(`✅ Server running on port ${PORT}`);
+        console.log(`🌍 Access at: http://localhost:${PORT}`);
+      });
     }
   } catch (err) {
-    console.error('DB error:', err);
+    console.error('❌ DB error:', err);
+    console.error('🔍 Error details:', {
+      message: err.message,
+      stack: err.stack,
+      code: err.code
+    });
     process.exit(1);
   }
 };
 
-console.log('Starting initialization...');
+console.log('🚀 Starting initialization...');
 init();
 
 // 🟡 Export handler do Passenger
+console.log('📤 Exporting app for Passenger');
 export default app;

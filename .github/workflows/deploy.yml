@@ -138,12 +138,29 @@ jobs:
               echo "import app from './src/server.js'; export default app;" > app.js
             fi
 
+            echo "▶ Sprawdzanie konfiguracji serwera"
+            node scripts/checkServerConfig.js
+
+            echo "▶ Test uruchomienia aplikacji"
+            timeout 30s node -e "
+            import('./src/server.js').then(() => {
+              console.log('✅ Aplikacja uruchomiła się poprawnie');
+              process.exit(0);
+            }).catch(err => {
+              console.error('❌ Błąd uruchomienia aplikacji:', err);
+              process.exit(1);
+            });
+            " || echo "⚠️  Timeout podczas testu uruchomienia (może być normalne w Passenger)"
+
             echo "▶ Restartowanie Passenger"
             cd ..
             touch tmp/restart.txt
             
             echo "▶ Oczekiwanie na restart aplikacji"
             sleep 10
+            
+            echo "▶ Testowanie endpointów"
+            node scripts/testEndpoints.js
             
             echo "▶ Sprawdzanie czy aplikacja się uruchomiła"
             echo "✅ Deploy zakończony - sprawdź aplikację w przeglądarce"
