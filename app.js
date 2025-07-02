@@ -12,7 +12,7 @@ dotenv.config({ path: path.join(__dirname, 'backend/.env') });
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 process.env.PASSENGER_APP_ENV = process.env.PASSENGER_APP_ENV || 'production';
 
-// Importujemy aplikację
+// Importujemyy aplikację
 import app from './backend/src/server.js';
 
 // Eksportujemy dla Passenger
